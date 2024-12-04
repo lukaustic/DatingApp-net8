@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +18,12 @@ namespace API.Controllers
     ) : BaseApiController
     {
         [HttpGet] // /api/users
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await userRepository.GetMembersAsync();
+            userParams.CurrentUsername = User.GetUsername();
+            var users = await userRepository.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(users);
 
             return Ok(users);
         }
@@ -85,7 +88,7 @@ namespace API.Controllers
             if (user == null) return BadRequest("Could not find user");
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
-            
+
             if (photo == null || photo.IsMain) return BadRequest("Cannot use this as main photo");
 
             var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
@@ -106,9 +109,9 @@ namespace API.Controllers
             if (user == null) return BadRequest("User not found");
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
-            
+
             if (photo == null || photo.IsMain) return BadRequest("This photo cannot be deleted");
-            
+
             if (photo.PublicId != null)
             {
                 var result = await photoService.DeletePhotoAsync(photo.PublicId);
