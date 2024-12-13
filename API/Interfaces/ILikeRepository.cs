@@ -4,10 +4,10 @@ using API.Helpers;
 
 namespace API.Interfaces
 {
-    public interface ILikesRepository
+    public interface ILikeRepository
     {
         Task<UserLike?> GetUserLike(int sourceUserId, int targetUserId);
-        Task<PagedList<MemberDto>> GetUserLikes(LikesParams likesParams);
+        Task<PagedList<MemberDto>> GetUserLikes(LikeParams likesParams);
         Task<IEnumerable<int>> GetCurrentUserLikeIds (int currentUserId);
         void DeleteLike(UserLike like);
         void AddLike(UserLike like);

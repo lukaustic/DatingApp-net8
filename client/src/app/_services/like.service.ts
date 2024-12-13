@@ -8,7 +8,7 @@ import { setPaginatiedResponse, setPaginationHeaders } from './paginationHelper'
 @Injectable({
   providedIn: 'root'
 })
-export class LikesService {
+export class LikeService {
   baseUrl = environment.apiUrl;
   private http = inject(HttpClient);
   likeIds = signal<number[]>([]);

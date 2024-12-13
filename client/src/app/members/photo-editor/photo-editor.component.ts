@@ -5,7 +5,7 @@ import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
 import { Photo } from '../../_models/photo';
-import { MembersService } from '../../_services/members.service';
+import { MemberService } from '../../_services/member.service';
 
 @Component({
   selector: 'app-photo-editor',
@@ -16,7 +16,7 @@ import { MembersService } from '../../_services/members.service';
 })
 export class PhotoEditorComponent implements OnInit {
   private accountService = inject(AccountService);
-  private membersService = inject(MembersService);
+  private memberService = inject(MemberService);
   member = input.required<Member>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
@@ -32,7 +32,7 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   deletePhoto(photo: Photo) {
-    this.membersService.deletePhoto(photo).subscribe({
+    this.memberService.deletePhoto(photo).subscribe({
       next: _ => {
         const updatedMember = {...this.member()};
         updatedMember.photos = updatedMember.photos.filter(x => x.id !== photo.id);
@@ -42,7 +42,7 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   setMainPhoto(photo: Photo) {
-    this.membersService.setMainPhoto(photo).subscribe({
+    this.memberService.setMainPhoto(photo).subscribe({
       next: _ => {
         const user = this.accountService.currentUser();
         if (user) {

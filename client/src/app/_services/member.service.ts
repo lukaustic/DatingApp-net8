@@ -12,7 +12,7 @@ import { setPaginatiedResponse, setPaginationHeaders } from './paginationHelper'
 @Injectable({
   providedIn: 'root'
 })
-export class MembersService {
+export class MemberService {
   private http = inject(HttpClient);
   private accountService = inject(AccountService);
   baseUrl = environment.apiUrl;

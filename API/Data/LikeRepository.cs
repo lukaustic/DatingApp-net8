@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.DTOs
 {
-    public class LikesRepository(DataContext context, IMapper mapper) : ILikesRepository
+    public class LikeRepository(DataContext context, IMapper mapper) : ILikeRepository
     {
         public void AddLike(UserLike like)
         {
@@ -34,7 +34,7 @@ namespace API.DTOs
             .FindAsync(sourceUserId, targetUserId);
         }
 
-        public async Task<PagedList<MemberDto>> GetUserLikes(LikesParams likesParams)
+        public async Task<PagedList<MemberDto>> GetUserLikes(LikeParams likesParams)
         {
             var likes = context.Likes.AsQueryable();
             IQueryable<MemberDto> query;
